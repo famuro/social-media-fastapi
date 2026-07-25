@@ -6,16 +6,23 @@ This project is being developed incrementally to demonstrate backend engineering
 
 ## Tech Stack
 
-- Python
+### Current
+
+- Python 3.14
 - FastAPI
 - Pydantic Settings
-- SQLModel
+- Ruff
+- pre-commit
+- GitHub Actions
+
+### Planned
+
 - PostgreSQL
+- SQLModel
 - Alembic
 - Docker
 - Pytest
-- Ruff
-- GitHub Actions
+- JWT Authentication
 
 ## Project Goals
 
@@ -53,13 +60,14 @@ Current progress:
 - [x] Application configuration
 - [x] Versioned API structure
 - [x] Health check endpoint
+- [x] Development tooling (Ruff, Makefile, pre-commit)
+- [x] Continuous integration (GitHub Actions)
+- [ ] Testing infrastructure
 - [ ] Database integration
 - [ ] Database migrations
 - [ ] Authentication
 - [ ] Core social media features
-- [ ] Testing
 - [ ] Containerization
-- [ ] CI/CD
 
 ## API
 
@@ -67,13 +75,13 @@ All API routes are versioned.
 
 Current API version:
 
-```
+```text
 /api/v1
 ```
 
 ### Health Check
 
-```
+```http
 GET /api/v1/health
 ```
 
@@ -90,12 +98,16 @@ Example response:
 ```text
 social-media-fastapi/
 │
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+│
 ├── app/
 │   ├── api/
 │   │   └── v1/
-│   │       ├── router.py
-│   │       └── endpoints/
-│   │           └── health.py
+│   │       ├── endpoints/
+│   │       │   └── health.py
+│   │       └── router.py
 │   │
 │   ├── core/
 │   │   └── config.py
@@ -103,10 +115,12 @@ social-media-fastapi/
 │   ├── schemas/
 │   │   └── health.py
 │   │
-│   ├── main.py
+│   └── main.py
 │
 ├── tests/
 ├── .env.example
+├── .pre-commit-config.yaml
+├── Makefile
 ├── LICENSE
 ├── pyproject.toml
 ├── uv.lock
@@ -114,26 +128,54 @@ social-media-fastapi/
 └── .gitignore
 ```
 
-## Running the Application
+## Development
 
-Install dependencies:
+Install project dependencies:
 
 ```bash
 uv sync
 ```
 
+Install the Git pre-commit hooks:
+
+```bash
+make install-hooks
+```
+
+Common development commands:
+
+```bash
+make lint
+make lint-fix
+make format
+make format-check
+make quality
+make run
+```
+
 Run the development server:
 
 ```bash
-uv run uvicorn app.main:app --reload
+make run
 ```
 
 API documentation:
 
-```
+```text
 http://localhost:8000/docs
 ```
 
+## Continuous Integration
+
+GitHub Actions automatically validates code quality for every pull request and every push to the `main` branch.
+
+The workflow currently performs:
+
+- Ruff linting
+- Ruff formatting checks
+
+Automated tests will be added as the testing infrastructure is introduced.
+
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the `LICENSE` file for details.

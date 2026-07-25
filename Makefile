@@ -1,12 +1,15 @@
-.PHONY: help lint lint-fix format format-check quality
+.PHONY: help lint lint-fix format format-check quality install-hooks run
 
 help:
 	@echo "Available commands:"
-	@echo "  make lint          Run Ruff linting"
-	@echo "  make lint-fix      Run Ruff linting and automatically fix issues"
 	@echo "  make format        Format code with Ruff"
 	@echo "  make format-check  Check formatting without changes"
+	@echo "  make install-hooks Install git pre-commit hooks"
+	@echo "  make lint          Run Ruff linting"
+	@echo "  make lint-fix      Run Ruff linting and automatically fix issues"
 	@echo "  make quality       Run all code quality checks"
+	@echo "  make run       	Run the api server"
+
 
 
 lint:
@@ -28,3 +31,11 @@ format-check:
 quality:
 	make lint
 	make format-check
+
+
+install-hooks:
+	uv run pre-commit install
+
+
+run:
+	uv run uvicorn app.main:app
