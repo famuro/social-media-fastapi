@@ -14,6 +14,7 @@ This project is being developed incrementally to demonstrate backend engineering
 - Ruff
 - pre-commit
 - GitHub Actions
+- Pytest
 
 ### Planned
 
@@ -21,7 +22,6 @@ This project is being developed incrementally to demonstrate backend engineering
 - SQLModel
 - Alembic
 - Docker
-- Pytest
 - JWT Authentication
 
 ## Project Goals
@@ -62,7 +62,7 @@ Current progress:
 - [x] Health check endpoint
 - [x] Development tooling (Ruff, Makefile, pre-commit)
 - [x] Continuous integration (GitHub Actions)
-- [ ] Testing infrastructure
+- [x] Testing infrastructure
 - [ ] Database integration
 - [ ] Database migrations
 - [ ] Authentication
@@ -151,6 +151,7 @@ make format
 make format-check
 make quality
 make run
+make test
 ```
 
 Run the development server:
