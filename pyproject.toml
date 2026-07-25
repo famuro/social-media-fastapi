@@ -7,3 +7,24 @@ dependencies = [
     "pydantic-settings>=2.14.2",
     "uvicorn>=0.51.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.0",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes - catches logical bugs
+    "I",   # import sorting
+    "UP",  # pyupgrade
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

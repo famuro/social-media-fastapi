@@ -5,7 +5,8 @@ from app.schemas.health import HealthResponse
 router: APIRouter = APIRouter(prefix="/health", tags=["Health"])
 
 
-@router.get("",
+@router.get(
+    "",
     response_model=HealthResponse,
     status_code=status.HTTP_200_OK,
     summary="Health check",

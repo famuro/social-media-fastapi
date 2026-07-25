@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from app.api.v1.router import router as api_router
 from app.core.config import settings
 
-
 app: FastAPI = FastAPI(
     title=settings.app_name,
     description="A social media backend API.",
