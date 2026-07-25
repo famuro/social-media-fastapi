@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.api.v1.router import router as api_router
 from app.core.config import settings
 
 
@@ -10,6 +11,4 @@ app: FastAPI = FastAPI(
 )
 
 
-@app.get("/")
-async def root() -> dict[str, str]:
-    return {"message": "Hello world from the Social Media API"}
+app.include_router(api_router, prefix="/api")
