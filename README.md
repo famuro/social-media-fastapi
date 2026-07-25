@@ -35,7 +35,7 @@ The goal of this project is to build a realistic backend application while follo
 Current progress:
 
 - [x] Project initialization
-- [ ] FastAPI application setup
+- [x] FastAPI application setup
 - [ ] Application configuration
 - [ ] Health check endpoint
 - [ ] Database integration
@@ -49,13 +49,31 @@ Current progress:
 
 ```text
 social-media-api/
-│
 ├── app/
+│   ├── __init__.py
+│   └── main.py
 ├── tests/
 ├── pyproject.toml
 ├── uv.lock
 ├── README.md
 └── .gitignore
+```
+
+## API
+
+### Health Check
+
+The API currently provides a basic root endpoint:
+```text
+GET /
+```
+
+Example response:
+
+```json
+{
+  "message": "Hello world from the Social Media API"
+}
 ```
 
 ## License
