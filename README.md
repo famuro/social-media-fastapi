@@ -149,6 +149,7 @@ make lint
 make lint-fix
 make format
 make format-check
+make install-hooks
 make quality
 make run
 make test
@@ -174,8 +175,7 @@ The workflow currently performs:
 
 - Ruff linting
 - Ruff formatting checks
-
-Automated tests will be added as the testing infrastructure is introduced.
+- Pytest test suite
 
 ## License
 
