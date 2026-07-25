@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
+from app.core.config import settings
+
 
 app: FastAPI = FastAPI(
-    title="Social Media API",
+    title=settings.app_name,
     description="A social media backend API.",
     version="0.1.0",
 )

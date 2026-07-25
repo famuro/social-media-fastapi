@@ -16,6 +16,16 @@ This project is being developed incrementally to demonstrate backend engineering
 - Ruff
 - GitHub Actions
 
+## Configuration
+
+Application configuration is managed using environment variables through Pydantic Settings.
+
+For local development, copy the example environment file:
+
+```bash
+cp .env.example .env
+````
+
 ## Project Goals
 
 The goal of this project is to build a realistic backend application while following industry best practices:
@@ -50,9 +60,15 @@ Current progress:
 ```text
 social-media-api/
 ├── app/
+│   ├── core/
+│   │   ├── __init__.py
+│   │   └── config.py
+│   │
 │   ├── __init__.py
 │   └── main.py
+│
 ├── tests/
+├── .env.example
 ├── pyproject.toml
 ├── uv.lock
 ├── README.md
