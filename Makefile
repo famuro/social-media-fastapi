@@ -1,4 +1,4 @@
-.PHONY: help lint lint-fix format format-check quality install-hooks run
+.PHONY: help lint lint-fix format format-check quality install-hooks run test
 
 help:
 	@echo "Available commands:"
@@ -9,6 +9,7 @@ help:
 	@echo "  make lint-fix      Run Ruff linting and automatically fix issues"
 	@echo "  make quality       Run all code quality checks"
 	@echo "  make run       	Run the api server"
+	@echo "  make test       	Run the test suite"
 
 
 
@@ -39,3 +40,7 @@ install-hooks:
 
 run:
 	uv run uvicorn app.main:app
+
+
+test:
+	uv run pytest
