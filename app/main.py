@@ -5,7 +5,7 @@ from app.core.config import settings
 
 app: FastAPI = FastAPI(
     title=settings.app_name,
-    description="A social media backend API.",
+    description="Production-style social media backend built with FastAPI.",
     version="0.1.0",
 )
 

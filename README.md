@@ -15,13 +15,13 @@ This project is being developed incrementally to demonstrate backend engineering
 - pre-commit
 - GitHub Actions
 - Pytest
+- Docker (Compose)
 
 ### Planned
 
 - PostgreSQL
 - SQLModel
 - Alembic
-- Docker
 - JWT Authentication
 
 ## Project Goals
@@ -63,11 +63,11 @@ Current progress:
 - [x] Development tooling (Ruff, Makefile, pre-commit)
 - [x] Continuous integration (GitHub Actions)
 - [x] Testing infrastructure
+- [ ] 🔄 Containerization 
 - [ ] Database integration
 - [ ] Database migrations
 - [ ] Authentication
 - [ ] Core social media features
-- [ ] Containerization
 
 ## API
 
@@ -159,6 +159,12 @@ Run the development server:
 
 ```bash
 make run
+```
+
+Run with Docker:
+
+```bash
+make build-up
 ```
 
 API documentation:
