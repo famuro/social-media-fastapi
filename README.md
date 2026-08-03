@@ -87,18 +87,24 @@ social-media-fastapi/
 │   │
 │   └── main.py
 │
-├── tests/     
+├── tests/
+│   ├── api/
+│   │   └── v1/
+│   │       └── test_health.py 
+│   │
+│   └── conftest.py  
+│
 ├── .dockerignore
 ├── .env.example
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── Dockerfile
 ├── docker-compose.yaml
-├── Makefile
+├── Dockerfile
 ├── LICENSE
+├── Makefile
 ├── pyproject.toml
-├── uv.lock
-└── README.md
+├── README.md
+└── uv.lock
 ```
 
 ### Getting Started

@@ -11,6 +11,9 @@ jobs:
     name: Code Quality
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: postgresql+asyncpg://test:test@127.0.0.1:5432/test_db
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
