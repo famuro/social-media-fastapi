@@ -27,12 +27,12 @@ Current progress:
 - [x] FastAPI application setup
 - [x] Application configuration
 - [x] Versioned API structure
-- [x] Health check endpoint
+- [x] Database health check
 - [x] Development tooling (Ruff, Makefile, pre-commit)
 - [x] Continuous integration (GitHub Actions)
 - [x] Testing infrastructure
 - [x] Containerization 
-- [ ] Database integration
+- [x] PostgreSQL database integration
 - [ ] Database migrations
 - [ ] Authentication
 - [ ] Core social media features
@@ -55,7 +55,8 @@ Example response:
 
 ```json
 {
-  "status": "healthy"
+  "status": "healthy",
+  "database": "connected"
 }
 ```
 
