@@ -2,54 +2,22 @@
 
 A production-style social media backend API built with FastAPI and modern Python tooling.
 
-This project is being developed incrementally to demonstrate backend engineering practices including API design, database integration, authentication, testing, containerization, and CI/CD workflows.
+This project is being developed incrementally to showcase modern backend engineering practices including: REST API, asynchronous programming, database integration, authentication, containerization, automated testing, and CI/CD workflows.
 
 ## Tech Stack
 
 ### Current
 
-- Python 3.14
-- FastAPI
-- Pydantic Settings
-- Ruff
-- pre-commit
-- GitHub Actions
-- Pytest
-- Docker (Compose)
+- **Backend:** Python 3.14, FastAPI, PostgreSQL
+- **Infrastructure:** Docker, Docker Compose, GitHub Actions
+- **Quality:** Ruff, Pytest, Pre-commit
 
 ### Planned
 
-- PostgreSQL
-- SQLModel
 - Alembic
 - JWT Authentication
 
-## Project Goals
-
-The goal of this project is to build a realistic backend application while following modern backend engineering practices:
-
-- Clean and maintainable application architecture
-- Versioned REST API design
-- Async API and database operations
-- Database migrations
-- Authentication and authorization
-- Automated testing
-- Containerized development
-- Continuous integration and deployment
-
-## Configuration
-
-Application configuration is managed using environment variables through Pydantic Settings.
-
-For local development, copy the example environment file:
-
-```bash
-cp .env.example .env
-```
-
-Environment-specific values are loaded at application startup and kept separate from source code.
-
-## Current Status
+## Project Status
 
 🚧 This project is actively under development.
 
@@ -59,19 +27,17 @@ Current progress:
 - [x] FastAPI application setup
 - [x] Application configuration
 - [x] Versioned API structure
-- [x] Health check endpoint
+- [x] Database health check
 - [x] Development tooling (Ruff, Makefile, pre-commit)
 - [x] Continuous integration (GitHub Actions)
 - [x] Testing infrastructure
-- [ ] 🔄 Containerization 
-- [ ] Database integration
+- [x] Containerization 
+- [x] PostgreSQL database integration
 - [ ] Database migrations
 - [ ] Authentication
 - [ ] Core social media features
 
 ## API
-
-All API routes are versioned.
 
 Current API version:
 
@@ -89,7 +55,8 @@ Example response:
 
 ```json
 {
-  "status": "healthy"
+  "status": "healthy",
+  "database": "connected"
 }
 ```
 
@@ -111,6 +78,9 @@ social-media-fastapi/
 │   │
 │   ├── core/
 │   │   └── config.py
+│   │   
+│   ├── db/
+│   │   └── session.py
 │   │
 │   ├── schemas/
 │   │   └── health.py
@@ -118,56 +88,46 @@ social-media-fastapi/
 │   └── main.py
 │
 ├── tests/
+│   ├── api/
+│   │   └── v1/
+│   │       └── test_health.py 
+│   │
+│   └── conftest.py  
+│
+├── .dockerignore
 ├── .env.example
+├── .gitignore
 ├── .pre-commit-config.yaml
-├── Makefile
+├── docker-compose.yaml
+├── Dockerfile
 ├── LICENSE
+├── Makefile
 ├── pyproject.toml
-├── uv.lock
 ├── README.md
-└── .gitignore
+└── uv.lock
 ```
 
-## Development
+### Getting Started
 
-Install project dependencies:
+Create a local environment file:
 
 ```bash
-uv sync
+cp .env.example .env
 ```
 
-Install the Git pre-commit hooks:
-
-```bash
-make install-hooks
-```
-
-Common development commands:
-
-```bash
-make lint
-make lint-fix
-make format
-make format-check
-make install-hooks
-make quality
-make run
-make test
-```
-
-Run the development server:
-
-```bash
-make run
-```
-
-Run with Docker:
+Build and start the application:
 
 ```bash
 make build-up
 ```
 
-API documentation:
+The API will be be available at:
+
+```text
+http://localhost:8000
+```
+
+Interactive API documentation:
 
 ```text
 http://localhost:8000/docs
@@ -175,13 +135,12 @@ http://localhost:8000/docs
 
 ## Continuous Integration
 
-GitHub Actions automatically validates code quality for every pull request and every push to the `main` branch.
-
-The workflow currently performs:
+GitHub Actions automatically validates every push and pull request to `main` by running:
 
 - Ruff linting
 - Ruff formatting checks
-- Pytest test suite
+- Pytest
+- Docker image build validation
 
 ## License
 

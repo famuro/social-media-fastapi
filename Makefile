@@ -1,4 +1,4 @@
-.PHONY: help lint lint-fix format format-check quality install-hooks run test build-up up down clean docker-logs
+.PHONY: help env lint lint-fix format format-check quality install-hooks run test build-up up down clean docker-logs
 
 help:
 	@echo "Available commands:"
@@ -7,6 +7,7 @@ help:
 	@echo "  make down     			Remove Docker services and networks"
 	@echo "  make clean     		Remove Docker services, networks, and volumes"
 	@echo "  make docker-logs     	View Docker logs"
+	@echo "  make env     			Copy the example environment file to a real .env file"
 	@echo "  make format        	Format code with Ruff"
 	@echo "  make format-check  	Check formatting without changes"
 	@echo "  make install-hooks 	Install git pre-commit hooks"
@@ -16,6 +17,9 @@ help:
 	@echo "  make run       		Run the api server"
 	@echo "  make test       		Run the test suite"
 
+
+env:
+	cp .env.example .env
 
 # uv commands
 lint:
@@ -59,4 +63,3 @@ clean:
 
 docker-logs:
 	docker compose logs -f
-
