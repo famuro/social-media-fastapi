@@ -10,6 +10,7 @@ This project is being developed incrementally to showcase modern backend enginee
 
 - **Server:** Python 3.14, FastAPI, SQLModel
 - **Database:** PostgreSQL, Alembic migrations
+- **Security:** Argon2 password hashing with pwdlib
 - **Infrastructure:** Docker, Docker Compose, GitHub Actions
 - **Quality:** Ruff, Pytest, Pre-commit
 
@@ -34,6 +35,7 @@ Current progress:
 - [x] Containerization 
 - [x] PostgreSQL database integration
 - [x] Database migrations
+- [x] Password hashing utilities
 - [ ] Authentication
 - [ ] Core social media features
 
