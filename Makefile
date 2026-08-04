@@ -1,4 +1,6 @@
-.PHONY: help env lint lint-fix format format-check quality install-hooks run test build-up up down clean docker-logs
+.PHONY: help env lint lint-fix format format-check quality install-hooks run test
+.PHONY: build-up up down clean docker-logs
+.PHONY: migration migrate downgrade migration-history migration-current
 
 help:
 	@echo "Available commands:"
@@ -63,3 +65,20 @@ clean:
 
 docker-logs:
 	docker compose logs -f
+
+
+# Alembic commands
+migration:
+	uv run alembic revision --autogenerate -m "$(message)"
+
+migrate:
+	uv run alembic upgrade head
+
+downgrade:
+	uv run alembic downgrade -1
+
+migration-history:
+	uv run alembic history --verbose
+
+migration-current:
+	uv run alembic current
