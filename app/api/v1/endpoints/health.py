@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.db.session import DatabaseSession
+from app.api.dependencies.database_deps import DatabaseSession
 from app.models.health import HealthResponse
 
 logger = logging.getLogger(__name__)

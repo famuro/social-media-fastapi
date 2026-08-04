@@ -36,6 +36,7 @@ Current progress:
 - [x] PostgreSQL database integration
 - [x] Database migrations
 - [x] Password hashing utilities
+- [x] User registration
 - [ ] Authentication
 - [ ] Core social media features
 
@@ -73,19 +74,25 @@ social-media-fastapi/
 │
 ├── app/
 │   ├── api/
-│   │   └── v1/
-│   │       ├── endpoints/
-│   │       │   └── health.py
-│   │       └── router.py
+│   │   ├── v1/
+│   │   │   ├── endpoints/
+│   │   │   │   ├── health.py
+│   │   │   │   └── users.py
+│   │   │   └── router.py
+│   │   │
+│   │   └── dependencies/
+│   │       ├── database_deps.py
+│   │       └── user_deps.py
 │   │
 │   ├── core/
-│   │   └── config.py
+│   │   ├── config.py
+│   │   └── security.py
 │   │   
 │   ├── db/
 │   │   └── session.py
 │   │
 │   ├── exceptions/
-│   │   └── user.py
+│   │   └── user_exceptions.py
 │   │   
 │   ├── models/
 │   │   ├── base.py
@@ -109,7 +116,8 @@ social-media-fastapi/
 ├── tests/
 │   ├── api/
 │   │   └── v1/
-│   │       └── test_health.py
+│   │       ├── test_health.py
+│   │       └── test_users.py
 │   │       
 │   ├── core/
 │   │   └── test_security.py

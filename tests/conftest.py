@@ -6,8 +6,10 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.dependencies.user_deps import get_user_service
 from app.db.session import get_session
 from app.main import app
+from app.services.user_service import UserService
 
 
 @pytest.fixture
@@ -39,3 +41,17 @@ def mock_database_session() -> AsyncSession:
     app.dependency_overrides[get_session] = override_get_session
 
     return session
+
+
+@pytest.fixture
+def mock_user_service() -> UserService:
+    """Override the user service with an isolated mock."""
+
+    service: UserService = cast(UserService, AsyncMock(spec=UserService))
+
+    def override_get_user_service() -> UserService:
+        return service
+
+    app.dependency_overrides[get_user_service] = override_get_user_service
+
+    return service
