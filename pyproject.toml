@@ -54,3 +54,7 @@ output_encoding = "utf-8"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+strict_markers = true
+markers = [
+    "integration: tests requiring a real database or external service",
+]

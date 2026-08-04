@@ -5,9 +5,9 @@ export
 .PHONY: help env lint lint-fix format format-check quality install-hooks run test
 .PHONY: build-up up down clean docker-logs
 .PHONY: migration migrate downgrade migration-history migration-current
+.PHONY: test-db test-integration test-all
 
-help:
-	## Show available Makefile commands
+help:	## Show available Makefile commands
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<command>\033[0m\n\nCommands:\n"} \
 		/^[a-zA-Z_-]+:.*?##/ {printf "  \033[36m%-24s\033[0m %s\n", $$1, $$2}' \
 		$(MAKEFILE_LIST)
@@ -42,9 +42,6 @@ install-hooks:	## Install git pre-commit hooks
 
 run:	## Run the api server
 	uv run uvicorn app.main:app
-
-test:	## Run the test suite
-	uv run pytest
 
 
 # Docker commands
@@ -93,3 +90,41 @@ migration-history: env	## Show the complete migration history
 migration-current: env	## Show the database's current migration revision
 	@$(call set-local-db-url); \
 	uv run alembic current
+
+
+# Unit and integration test commands
+test:	## Run unit tests
+	uv run pytest -m "not integration"
+
+test-db: env	## Create the PostgreSQL integration-test database
+	@set -a; \
+	. ./.env; \
+	set +a; \
+	docker compose exec -T db \
+		psql \
+		-U "$$POSTGRES_USER" \
+		-d postgres \
+		-tAc \
+		"SELECT 1 FROM pg_database WHERE datname = '$$TEST_DATABASE_NAME'" \
+		| grep -q 1 || \
+	docker compose exec -T db \
+		createdb \
+		-U "$$POSTGRES_USER" \
+		"$$TEST_DATABASE_NAME"
+
+test-integration: env test-db	## Run PostgreSQL integration tests
+	@set -a; \
+	. ./.env; \
+	set +a; \
+	uv run pytest \
+		-o addopts="--strict-markers" \
+		-m integration \
+		tests/integration
+
+test-all: env test-db	## Run unit and integration tests
+	@set -a; \
+	. ./.env; \
+	set +a; \
+	uv run pytest \
+		-o addopts="--strict-markers" \
+		tests

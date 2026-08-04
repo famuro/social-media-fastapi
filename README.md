@@ -121,6 +121,12 @@ social-media-fastapi/
 │   │       
 │   ├── core/
 │   │   └── test_security.py
+│   │   
+│   ├── integration/
+│   │   ├── api/
+│   │   │   └── v1/
+│   │   │       └── test_user_registration.py
+│   │   └── conftest.py
 │   │
 │   ├── models/
 │   │   └── test_user.py
@@ -146,7 +152,7 @@ social-media-fastapi/
 └── uv.lock
 ```
 
-### Getting Started
+## Getting Started
 
 Create a local environment file:
 
@@ -160,11 +166,14 @@ Build and start the application:
 make build-up
 ```
 
-The API will be available at:
+[//]: # (The API will be available at:)
 
-```text
-http://localhost:8000
-```
+[//]: # ()
+[//]: # (```text)
+
+[//]: # (http://localhost:8000)
+
+[//]: # (```)
 
 Interactive API documentation:
 
@@ -172,7 +181,30 @@ Interactive API documentation:
 http://localhost:8000/docs
 ```
 
-## Database Migrations
+### Testing
+
+Run the isolated unit-test suite:
+
+```bash
+make test
+```
+
+With the PostgreSQL container running, run the integration-test suite:
+
+```bash
+make test-integration
+```
+
+Run both test suites:
+
+```bash
+make test-all
+```
+
+Integration tests use a dedicated PostgreSQL test database, apply Alembic migrations automatically, and roll back test data after each test.
+
+
+### Database Migrations
 
 Create a migration after changing the database models:
 
@@ -214,6 +246,7 @@ GitHub Actions automatically validates every push and pull request to `main` by 
 - Ruff linting
 - Ruff formatting checks
 - Pytest
+- PostgreSQL integration tests
 - Docker image build validation
 
 ## License
