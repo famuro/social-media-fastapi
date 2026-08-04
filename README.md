@@ -8,13 +8,13 @@ This project is being developed incrementally to showcase modern backend enginee
 
 ### Current
 
-- **Backend:** Python 3.14, FastAPI, PostgreSQL
+- **Server:** Python 3.14, FastAPI, SQLModel
+- **Database:** PostgreSQL, Alembic migrations
 - **Infrastructure:** Docker, Docker Compose, GitHub Actions
 - **Quality:** Ruff, Pytest, Pre-commit
 
 ### Planned
 
-- Alembic
 - JWT Authentication
 
 ## Project Status
@@ -33,7 +33,7 @@ Current progress:
 - [x] Testing infrastructure
 - [x] Containerization 
 - [x] PostgreSQL database integration
-- [ ] Database migrations
+- [x] Database migrations
 - [ ] Authentication
 - [ ] Core social media features
 
@@ -82,15 +82,26 @@ social-media-fastapi/
 │   ├── db/
 │   │   └── session.py
 │   │
-│   ├── schemas/
-│   │   └── health.py
+│   ├── models/
+│   │   ├── base.py
+│   │   ├── health.py
+│   │   └── user.py
 │   │
 │   └── main.py
+│
+├── migrations/
+│   ├── versions/
+│   ├── env.py
+│   ├── README
+│   └── script.py.mako
 │
 ├── tests/
 │   ├── api/
 │   │   └── v1/
 │   │       └── test_health.py 
+│   │
+│   ├── models/
+│   │   └── test_user.py
 │   │
 │   └── conftest.py  
 │
@@ -112,7 +123,7 @@ social-media-fastapi/
 Create a local environment file:
 
 ```bash
-cp .env.example .env
+make env
 ```
 
 Build and start the application:
@@ -121,7 +132,7 @@ Build and start the application:
 make build-up
 ```
 
-The API will be be available at:
+The API will be available at:
 
 ```text
 http://localhost:8000
@@ -132,6 +143,41 @@ Interactive API documentation:
 ```text
 http://localhost:8000/docs
 ```
+
+## Database Migrations
+
+Create a migration after changing the database models:
+
+```bash
+make migration message="describe the schema change"
+```
+
+Apply all pending migrations:
+
+```bash
+make migrate
+```
+
+Downgrade the most recent migration:
+
+```bash
+make downgrade
+```
+
+View the migration history:
+
+```bash
+make migration-history
+```
+
+View the current database revision:
+
+```bash
+make migration-current
+```
+
+The migration commands automatically load the project environment and use a host-accessible PostgreSQL connection.
+
 
 ## Continuous Integration
 
