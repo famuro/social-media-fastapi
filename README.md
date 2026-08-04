@@ -82,8 +82,10 @@ social-media-fastapi/
 │   ├── db/
 │   │   └── session.py
 │   │
-│   ├── schemas/
-│   │   └── health.py
+│   ├── models/
+│   │   ├── base.py
+│   │   ├── health.py
+│   │   └── user.py
 │   │
 │   └── main.py
 │
@@ -91,6 +93,9 @@ social-media-fastapi/
 │   ├── api/
 │   │   └── v1/
 │   │       └── test_health.py 
+│   │
+│   ├── models/
+│   │   └── test_user.py
 │   │
 │   └── conftest.py  
 │

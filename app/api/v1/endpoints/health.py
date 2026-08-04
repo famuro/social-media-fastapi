@@ -6,7 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.db.session import DatabaseSession
-from app.schemas.health import HealthResponse
+from app.models.health import HealthResponse
 
 logger = logging.getLogger(__name__)
 
@@ -21,9 +21,7 @@ router: APIRouter = APIRouter(prefix="/health", tags=["Health"])
     description="Returns the current health status of the API.",
 )
 async def health_check(session: DatabaseSession) -> HealthResponse:
-    """
-    Verify that the API is running and can establish a database connection.
-    """
+    """Verify that the API is running and can establish a database connection."""
 
     try:
         await session.execute(text("SELECT 1"))
