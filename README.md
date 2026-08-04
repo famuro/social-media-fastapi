@@ -84,6 +84,9 @@ social-media-fastapi/
 │   ├── db/
 │   │   └── session.py
 │   │
+│   ├── exceptions/
+│   │   └── user.py
+│   │   
 │   ├── models/
 │   │   ├── base.py
 │   │   ├── health.py
@@ -91,6 +94,9 @@ social-media-fastapi/
 │   │   
 │   ├── repositories/
 │   │   └── user_repository.py
+│   │   
+│   ├── services/
+│   │   └── user_service.py
 │   │
 │   └── main.py
 │
@@ -103,13 +109,19 @@ social-media-fastapi/
 ├── tests/
 │   ├── api/
 │   │   └── v1/
-│   │       └── test_health.py 
+│   │       └── test_health.py
+│   │       
+│   ├── core/
+│   │   └── test_security.py
 │   │
 │   ├── models/
 │   │   └── test_user.py
 │   │   
 │   ├── repositories/
 │   │   └── test_user_repository.py
+│   │   
+│   ├── services/
+│   │   └── test_user_service.py
 │   │
 │   └── conftest.py  
 │

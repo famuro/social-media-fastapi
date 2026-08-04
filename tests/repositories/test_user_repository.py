@@ -15,10 +15,7 @@ from app.repositories.user_repository import UserRepository
 def mock_session() -> AsyncSession:
     """Provide a mocked asynchronous database session."""
 
-    return cast(
-        AsyncSession,
-        AsyncMock(spec=AsyncSession),
-    )
+    return cast(AsyncSession, AsyncMock(spec=AsyncSession))
 
 
 @pytest.fixture
