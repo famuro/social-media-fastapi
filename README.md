@@ -88,6 +88,9 @@ social-media-fastapi/
 │   │   ├── base.py
 │   │   ├── health.py
 │   │   └── user.py
+│   │   
+│   ├── repositories/
+│   │   └── user_repository.py
 │   │
 │   └── main.py
 │
@@ -104,6 +107,9 @@ social-media-fastapi/
 │   │
 │   ├── models/
 │   │   └── test_user.py
+│   │   
+│   ├── repositories/
+│   │   └── test_user_repository.py
 │   │
 │   └── conftest.py  
 │
