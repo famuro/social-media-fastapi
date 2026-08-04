@@ -4,7 +4,7 @@ from datetime import datetime
 from uuid import UUID
 
 from pydantic import ConfigDict
-from sqlalchemy import CheckConstraint
+from sqlalchemy import CheckConstraint, text
 from sqlmodel import Field, SQLModel
 
 from app.models.base import TableBase
@@ -60,10 +60,16 @@ class User(TableBase, UserBase, table=True):
     is_active: bool = Field(
         default=True,
         nullable=False,
+        sa_column_kwargs={
+            "server_default": text("true"),
+        },
     )
     is_superuser: bool = Field(
         default=False,
         nullable=False,
+        sa_column_kwargs={
+            "server_default": text("false"),
+        },
     )
 
 
