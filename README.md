@@ -10,6 +10,7 @@ This project is being developed incrementally to showcase modern backend enginee
 
 - **Server:** Python 3.14, FastAPI, SQLModel
 - **Database:** PostgreSQL, Alembic migrations
+- **Security:** Argon2 password hashing with pwdlib
 - **Infrastructure:** Docker, Docker Compose, GitHub Actions
 - **Quality:** Ruff, Pytest, Pre-commit
 
@@ -34,6 +35,8 @@ Current progress:
 - [x] Containerization 
 - [x] PostgreSQL database integration
 - [x] Database migrations
+- [x] Password hashing utilities
+- [x] User registration
 - [ ] Authentication
 - [ ] Core social media features
 
@@ -71,21 +74,36 @@ social-media-fastapi/
 │
 ├── app/
 │   ├── api/
-│   │   └── v1/
-│   │       ├── endpoints/
-│   │       │   └── health.py
-│   │       └── router.py
+│   │   ├── v1/
+│   │   │   ├── endpoints/
+│   │   │   │   ├── health.py
+│   │   │   │   └── users.py
+│   │   │   └── router.py
+│   │   │
+│   │   └── dependencies/
+│   │       ├── database_deps.py
+│   │       └── user_deps.py
 │   │
 │   ├── core/
-│   │   └── config.py
+│   │   ├── config.py
+│   │   └── security.py
 │   │   
 │   ├── db/
 │   │   └── session.py
 │   │
+│   ├── exceptions/
+│   │   └── user_exceptions.py
+│   │   
 │   ├── models/
 │   │   ├── base.py
 │   │   ├── health.py
 │   │   └── user.py
+│   │   
+│   ├── repositories/
+│   │   └── user_repository.py
+│   │   
+│   ├── services/
+│   │   └── user_service.py
 │   │
 │   └── main.py
 │
@@ -98,10 +116,26 @@ social-media-fastapi/
 ├── tests/
 │   ├── api/
 │   │   └── v1/
-│   │       └── test_health.py 
+│   │       ├── test_health.py
+│   │       └── test_users.py
+│   │       
+│   ├── core/
+│   │   └── test_security.py
+│   │   
+│   ├── integration/
+│   │   ├── api/
+│   │   │   └── v1/
+│   │   │       └── test_user_registration.py
+│   │   └── conftest.py
 │   │
 │   ├── models/
 │   │   └── test_user.py
+│   │   
+│   ├── repositories/
+│   │   └── test_user_repository.py
+│   │   
+│   ├── services/
+│   │   └── test_user_service.py
 │   │
 │   └── conftest.py  
 │
@@ -118,7 +152,7 @@ social-media-fastapi/
 └── uv.lock
 ```
 
-### Getting Started
+## Getting Started
 
 Create a local environment file:
 
@@ -132,11 +166,14 @@ Build and start the application:
 make build-up
 ```
 
-The API will be available at:
+[//]: # (The API will be available at:)
 
-```text
-http://localhost:8000
-```
+[//]: # ()
+[//]: # (```text)
+
+[//]: # (http://localhost:8000)
+
+[//]: # (```)
 
 Interactive API documentation:
 
@@ -144,7 +181,30 @@ Interactive API documentation:
 http://localhost:8000/docs
 ```
 
-## Database Migrations
+### Testing
+
+Run the isolated unit-test suite:
+
+```bash
+make test
+```
+
+With the PostgreSQL container running, run the integration-test suite:
+
+```bash
+make test-integration
+```
+
+Run both test suites:
+
+```bash
+make test-all
+```
+
+Integration tests use a dedicated PostgreSQL test database, apply Alembic migrations automatically, and roll back test data after each test.
+
+
+### Database Migrations
 
 Create a migration after changing the database models:
 
@@ -186,6 +246,7 @@ GitHub Actions automatically validates every push and pull request to `main` by 
 - Ruff linting
 - Ruff formatting checks
 - Pytest
+- PostgreSQL integration tests
 - Docker image build validation
 
 ## License
