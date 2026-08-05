@@ -44,7 +44,7 @@ def apply_test_migrations(test_database_url: str) -> Generator[None]:
     }
 
     subprocess.run(
-        ["alembic", "upgrade", "head"],
+        ["uv", "run", "alembic", "upgrade", "head"],
         check=True,
         env=migration_environment,
     )

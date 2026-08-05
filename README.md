@@ -10,7 +10,7 @@ This project is being developed incrementally to showcase modern backend enginee
 
 - **Server:** Python 3.14, FastAPI, SQLModel
 - **Database:** PostgreSQL, Alembic migrations
-- **Security:** Argon2 password hashing with pwdlib
+- **Security:** Argon2 password hashing, JWT signed access tokens
 - **Infrastructure:** Docker, Docker Compose, GitHub Actions
 - **Quality:** Ruff, Pytest, Pre-commit
 
@@ -37,7 +37,7 @@ Current progress:
 - [x] Database migrations
 - [x] Password hashing utilities
 - [x] User registration
-- [ ] Authentication
+- [x] JWT Authentication
 - [ ] Core social media features
 
 ## API
@@ -76,25 +76,30 @@ social-media-fastapi/
 │   ├── api/
 │   │   ├── v1/
 │   │   │   ├── endpoints/
+│   │       │   ├── auth.py
 │   │   │   │   ├── health.py
 │   │   │   │   └── users.py
 │   │   │   └── router.py
 │   │   │
 │   │   └── dependencies/
+│   │   │   ├── auth_deps.py
 │   │       ├── database_deps.py
 │   │       └── user_deps.py
 │   │
 │   ├── core/
 │   │   ├── config.py
-│   │   └── security.py
+│   │   ├── security.py
+│   │   └── tokens.py
 │   │   
 │   ├── db/
 │   │   └── session.py
 │   │
 │   ├── exceptions/
+│   │   ├── auth_exceptions.py
 │   │   └── user_exceptions.py
 │   │   
 │   ├── models/
+│   │   ├── auth.py
 │   │   ├── base.py
 │   │   ├── health.py
 │   │   └── user.py
@@ -103,6 +108,7 @@ social-media-fastapi/
 │   │   └── user_repository.py
 │   │   
 │   ├── services/
+│   │   ├── auth_service.py
 │   │   └── user_service.py
 │   │
 │   └── main.py
@@ -116,17 +122,18 @@ social-media-fastapi/
 ├── tests/
 │   ├── api/
 │   │   └── v1/
+│   │       ├── test_auth.py
 │   │       ├── test_health.py
 │   │       └── test_users.py
 │   │       
 │   ├── core/
-│   │   └── test_security.py
+│   │   ├── test_security.py
+│   │   └── test_tokens.py
 │   │   
 │   ├── integration/
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── test_user_registration.py
-│   │   └── conftest.py
+│   │   ├── conftest.py
+│   │   ├── test_auth.py
+│   │   └── test_user_registration.py
 │   │
 │   ├── models/
 │   │   └── test_user.py
@@ -135,6 +142,7 @@ social-media-fastapi/
 │   │   └── test_user_repository.py
 │   │   
 │   ├── services/
+│   │   ├── test_auth_service.py
 │   │   └── test_user_service.py
 │   │
 │   └── conftest.py  
