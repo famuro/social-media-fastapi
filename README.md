@@ -131,10 +131,9 @@ social-media-fastapi/
 │   │   └── test_tokens.py
 │   │   
 │   ├── integration/
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── test_user_registration.py
-│   │   └── conftest.py
+│   │   ├── conftest.py
+│   │   ├── test_auth.py
+│   │   └── test_user_registration.py
 │   │
 │   ├── models/
 │   │   └── test_user.py
