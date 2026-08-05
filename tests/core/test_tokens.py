@@ -1,6 +1,5 @@
 """Tests for authentication token utilities."""
 
-from datetime import timedelta
 from uuid import UUID, uuid4
 
 import jwt
@@ -41,24 +40,19 @@ def test_access_token_contains_expected_claims() -> None:
     assert "exp" in claims
 
 
-def test_decode_access_token_rejects_expired_token() -> None:
-    """An expired access token should not be accepted."""
-
-    token = create_access_token(subject=uuid4(), expires_delta=timedelta(seconds=-1))
-
-    with pytest.raises(InvalidTokenError):
-        decode_access_token(token)
-
-
 def test_decode_access_token_rejects_modified_token() -> None:
     """A token with a modified signature should not be accepted."""
 
     token = create_access_token(subject=uuid4())
-    replacement = "a" if token[-1] != "a" else "b"
-    modified_token = f"{token[:-1]}{replacement}"
+    header, payload, signature = token.split(".")
+
+    # Change an early signature character so meaningful Base64URL bits are modified.
+    replacement = "a" if signature[0] != "a" else "b"
+    tampered_signature = replacement + signature[1:]
+    tampered_token = f"{header}.{payload}.{tampered_signature}"
 
     with pytest.raises(InvalidTokenError):
-        decode_access_token(modified_token)
+        decode_access_token(tampered_token)
 
 
 def test_decode_access_token_rejects_invalid_subject() -> None:

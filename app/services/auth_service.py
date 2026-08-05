@@ -1,9 +1,9 @@
 """Business workflows for user authentication."""
 
 from app.core.security import verify_password
-from app.core.tokens import create_access_token
-from app.exceptions.auth_exceptions import InvalidCredentialsError
-from app.models.auth import Token
+from app.core.tokens import create_access_token, decode_access_token
+from app.exceptions.auth_exceptions import InvalidCredentialsError, InvalidTokenError
+from app.models.auth import Token, TokenPayload
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 
@@ -40,3 +40,14 @@ class AuthService:
         access_token: str = create_access_token(subject=user.id)
 
         return Token(access_token=access_token)
+
+    async def authenticate_token(self, token: str) -> User:
+        """Validate an access token and return its active user."""
+
+        payload: TokenPayload = decode_access_token(token)
+        user: User | None = await self._repository.get_by_id(payload.subject)
+
+        if user is None or not user.is_active:
+            raise InvalidTokenError()
+
+        return user

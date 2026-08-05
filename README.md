@@ -37,7 +37,7 @@ Current progress:
 - [x] Database migrations
 - [x] Password hashing utilities
 - [x] User registration
-- [ ] Authentication
+- [x] JWT Authentication
 - [ ] Core social media features
 
 ## API

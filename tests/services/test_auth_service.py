@@ -4,8 +4,8 @@ from unittest.mock import patch
 
 import pytest
 
-from app.exceptions.auth_exceptions import InvalidCredentialsError
-from app.models.auth import Token
+from app.exceptions.auth_exceptions import InvalidCredentialsError, InvalidTokenError
+from app.models.auth import Token, TokenPayload
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.services.auth_service import AuthService
@@ -189,3 +189,108 @@ async def test_create_token_does_not_issue_token_for_invalid_credentials(
         )
 
     create_access_token_mock.assert_not_called()
+
+
+async def test_authenticate_token_returns_active_user(
+    auth_service: AuthService,
+    mock_user_repository: UserRepository,
+    active_user: User,
+) -> None:
+    """A valid token should resolve to its active user."""
+
+    token_payload = TokenPayload(
+        subject=active_user.id,
+        token_type="access",
+    )
+    mock_user_repository.get_by_id.return_value = active_user
+
+    with patch(
+        "app.services.auth_service.decode_access_token",
+        return_value=token_payload,
+    ) as mock_decode_access_token:
+        result = await auth_service.authenticate_token(
+            "signed-access-token",
+        )
+
+    assert result is active_user
+
+    mock_decode_access_token.assert_called_once_with(
+        "signed-access-token",
+    )
+    mock_user_repository.get_by_id.assert_awaited_once_with(
+        active_user.id,
+    )
+
+
+async def test_authenticate_token_rejects_unknown_user(
+    auth_service: AuthService,
+    mock_user_repository: UserRepository,
+    active_user: User,
+) -> None:
+    """A token for a missing user should be rejected."""
+
+    token_payload = TokenPayload(
+        subject=active_user.id,
+        token_type="access",
+    )
+    mock_user_repository.get_by_id.return_value = None
+
+    with patch(
+        "app.services.auth_service.decode_access_token",
+        return_value=token_payload,
+    ):
+        with pytest.raises(InvalidTokenError):
+            await auth_service.authenticate_token(
+                "signed-access-token",
+            )
+
+    mock_user_repository.get_by_id.assert_awaited_once_with(
+        active_user.id,
+    )
+
+
+async def test_authenticate_token_rejects_inactive_user(
+    auth_service: AuthService,
+    mock_user_repository: UserRepository,
+    active_user: User,
+) -> None:
+    """A token belonging to an inactive user should be rejected."""
+
+    active_user.is_active = False
+
+    token_payload = TokenPayload(
+        subject=active_user.id,
+        token_type="access",
+    )
+    mock_user_repository.get_by_id.return_value = active_user
+
+    with patch(
+        "app.services.auth_service.decode_access_token",
+        return_value=token_payload,
+    ):
+        with pytest.raises(InvalidTokenError):
+            await auth_service.authenticate_token(
+                "signed-access-token",
+            )
+
+    mock_user_repository.get_by_id.assert_awaited_once_with(
+        active_user.id,
+    )
+
+
+async def test_authenticate_token_propagates_invalid_token_error(
+    auth_service: AuthService,
+    mock_user_repository: UserRepository,
+) -> None:
+    """A token decoding failure should remain an authentication error."""
+
+    with patch(
+        "app.services.auth_service.decode_access_token",
+        side_effect=InvalidTokenError(),
+    ):
+        with pytest.raises(InvalidTokenError):
+            await auth_service.authenticate_token(
+                "invalid-access-token",
+            )
+
+    mock_user_repository.get_by_id.assert_not_awaited()

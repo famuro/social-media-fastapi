@@ -4,11 +4,14 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
+from app.exceptions import InvalidTokenError
 from app.exceptions.user_exceptions import UserAlreadyExistsError
 from app.models.user import User, UserCreate, UserPublic
+from app.services import AuthService
 from app.services.user_service import UserService
 
 REGISTER_USER_URL = "/api/v1/users"
+CURRENT_USER_URL = "/api/v1/users/me"
 
 VALID_REGISTRATION_PAYLOAD = {
     "username": "testuser",
@@ -106,3 +109,93 @@ def test_register_user_rejects_invalid_request(
 
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
     mock_user_service.register.assert_not_awaited()
+
+
+def test_read_current_user_returns_authenticated_user(
+    client: TestClient,
+    mock_auth_service: AuthService,
+) -> None:
+    """A valid bearer token should return its authenticated user."""
+
+    authenticated_user: User = User(
+        username="testuser",
+        email="test@example.com",
+        hashed_password="hashed-password",
+    )
+
+    mock_auth_service.authenticate_token.return_value = authenticated_user
+
+    response = client.get(
+        CURRENT_USER_URL,
+        headers={"Authorization": "Bearer signed-access-token"},
+    )
+
+    expected_user = UserPublic.model_validate(authenticated_user)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == expected_user.model_dump(mode="json")
+
+    mock_auth_service.authenticate_token.assert_awaited_once_with(
+        "signed-access-token",
+    )
+
+
+def test_read_current_user_requires_bearer_token(
+    client: TestClient,
+    mock_auth_service: AuthService,
+) -> None:
+    """A protected endpoint should reject missing credentials."""
+
+    response = client.get(CURRENT_USER_URL)
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.json() == {
+        "detail": "Not authenticated",
+    }
+    assert response.headers["www-authenticate"] == "Bearer"
+
+    mock_auth_service.authenticate_token.assert_not_awaited()
+
+
+def test_read_current_user_rejects_invalid_token(
+    client: TestClient,
+    mock_auth_service: AuthService,
+) -> None:
+    """An invalid bearer token should return an authentication error."""
+
+    mock_auth_service.authenticate_token.side_effect = InvalidTokenError()
+
+    response = client.get(
+        CURRENT_USER_URL,
+        headers={
+            "Authorization": "Bearer invalid-access-token",
+        },
+    )
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.json() == {"detail": "Could not validate credentials."}
+    assert response.headers["www-authenticate"] == "Bearer"
+
+    mock_auth_service.authenticate_token.assert_awaited_once_with(
+        "invalid-access-token",
+    )
+
+
+def test_read_current_user_rejects_non_bearer_scheme(
+    client: TestClient,
+    mock_auth_service: AuthService,
+) -> None:
+    """A protected endpoint should require the bearer scheme."""
+
+    response = client.get(
+        CURRENT_USER_URL,
+        headers={
+            "Authorization": "Basic credentials",
+        },
+    )
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.json() == {"detail": "Not authenticated"}
+    assert response.headers["www-authenticate"] == "Bearer"
+
+    mock_auth_service.authenticate_token.assert_not_awaited()
