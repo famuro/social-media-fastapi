@@ -10,7 +10,7 @@ This project is being developed incrementally to showcase modern backend enginee
 
 - **Server:** Python 3.14, FastAPI, SQLModel
 - **Database:** PostgreSQL, Alembic migrations
-- **Security:** Argon2 password hashing with pwdlib
+- **Security:** Argon2 password hashing, JWT signed access tokens
 - **Infrastructure:** Docker, Docker Compose, GitHub Actions
 - **Quality:** Ruff, Pytest, Pre-commit
 
@@ -86,15 +86,18 @@ social-media-fastapi/
 │   │
 │   ├── core/
 │   │   ├── config.py
-│   │   └── security.py
+│   │   ├── security.py
+│   │   └── tokens.py
 │   │   
 │   ├── db/
 │   │   └── session.py
 │   │
 │   ├── exceptions/
+│   │   ├── auth_exceptions.py
 │   │   └── user_exceptions.py
 │   │   
 │   ├── models/
+│   │   ├── auth.py
 │   │   ├── base.py
 │   │   ├── health.py
 │   │   └── user.py
@@ -120,7 +123,8 @@ social-media-fastapi/
 │   │       └── test_users.py
 │   │       
 │   ├── core/
-│   │   └── test_security.py
+│   │   ├── test_security.py
+│   │   └── test_tokens.py
 │   │   
 │   ├── integration/
 │   │   ├── api/
