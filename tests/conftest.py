@@ -6,10 +6,12 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.dependencies.auth_deps import get_auth_service
 from app.api.dependencies.user_deps import get_user_service
 from app.db.session import get_session
 from app.main import app
 from app.repositories.user_repository import UserRepository
+from app.services import AuthService
 from app.services.user_service import UserService
 
 
@@ -63,3 +65,17 @@ def mock_user_repository() -> UserRepository:
     """Provide an isolated user repository mock."""
 
     return cast(UserRepository, AsyncMock(spec=UserRepository))
+
+
+@pytest.fixture
+def mock_auth_service() -> AuthService:
+    """Override the authentication service with an isolated mock."""
+
+    service: AuthService = cast(AuthService, AsyncMock(spec=AuthService))
+
+    def override_get_auth_service() -> AuthService:
+        return service
+
+    app.dependency_overrides[get_auth_service] = override_get_auth_service
+
+    return service

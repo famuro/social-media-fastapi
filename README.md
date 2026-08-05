@@ -76,11 +76,13 @@ social-media-fastapi/
 │   ├── api/
 │   │   ├── v1/
 │   │   │   ├── endpoints/
+│   │       │   ├── auth.py
 │   │   │   │   ├── health.py
 │   │   │   │   └── users.py
 │   │   │   └── router.py
 │   │   │
 │   │   └── dependencies/
+│   │   │   ├── auth_deps.py
 │   │       ├── database_deps.py
 │   │       └── user_deps.py
 │   │
@@ -120,6 +122,7 @@ social-media-fastapi/
 ├── tests/
 │   ├── api/
 │   │   └── v1/
+│   │       ├── test_auth.py
 │   │       ├── test_health.py
 │   │       └── test_users.py
 │   │       

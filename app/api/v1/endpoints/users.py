@@ -6,7 +6,7 @@ from app.api.dependencies.user_deps import UserServiceDependency
 from app.exceptions.user_exceptions import UserAlreadyExistsError
 from app.models.user import UserCreate, UserPublic
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router: APIRouter = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.post("", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
