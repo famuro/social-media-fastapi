@@ -106,6 +106,7 @@ social-media-fastapi/
 │   │   └── user_repository.py
 │   │   
 │   ├── services/
+│   │   ├── auth_service.py
 │   │   └── user_service.py
 │   │
 │   └── main.py
@@ -139,6 +140,7 @@ social-media-fastapi/
 │   │   └── test_user_repository.py
 │   │   
 │   ├── services/
+│   │   ├── test_auth_service.py
 │   │   └── test_user_service.py
 │   │
 │   └── conftest.py  

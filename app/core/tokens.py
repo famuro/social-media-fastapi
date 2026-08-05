@@ -12,7 +12,7 @@ from app.core.config import settings
 from app.exceptions.auth_exceptions import InvalidTokenError
 from app.models.auth import TokenPayload
 
-ACCESS_TOKEN_TYPE: Final = "access"
+ACCESS_TOKEN_TYPE: Final[str] = "access"
 
 _REQUIRED_CLAIMS: Final[list[str]] = [
     "sub",
@@ -25,14 +25,14 @@ _REQUIRED_CLAIMS: Final[list[str]] = [
 def create_access_token(subject: UUID, expires_delta: timedelta | None = None) -> str:
     """Create a signed access token for a user."""
 
-    issued_at = datetime.now(UTC)
-    expires_at = issued_at + (
+    issued_at: datetime = datetime.now(UTC)
+    expires_at: datetime = issued_at + (
         expires_delta
         if expires_delta is not None
         else timedelta(minutes=settings.access_token_expire_minutes)
     )
 
-    claims = {
+    claims: dict[str, str | datetime] = {
         "sub": str(subject),
         "type": ACCESS_TOKEN_TYPE,
         "iat": issued_at,
@@ -50,7 +50,7 @@ def decode_access_token(token: str) -> TokenPayload:
     """Decode and validate a signed access token."""
 
     try:
-        claims = jwt.decode(
+        claims: dict = jwt.decode(
             token,
             settings.jwt_secret_key.get_secret_value(),
             algorithms=[settings.jwt_algorithm],
@@ -59,7 +59,7 @@ def decode_access_token(token: str) -> TokenPayload:
             },
         )
 
-        payload = TokenPayload(
+        payload: TokenPayload = TokenPayload(
             subject=claims["sub"],
             token_type=claims["type"],
         )

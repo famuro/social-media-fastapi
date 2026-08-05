@@ -18,7 +18,8 @@ VALID_REGISTRATION_PAYLOAD = {
 
 
 def test_register_user_returns_created_user(
-    client: TestClient, mock_user_service: UserService
+    client: TestClient,
+    mock_user_service: UserService,
 ) -> None:
     """Successful registration should return the public user representation."""
 

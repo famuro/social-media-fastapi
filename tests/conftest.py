@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.dependencies.user_deps import get_user_service
 from app.db.session import get_session
 from app.main import app
+from app.repositories.user_repository import UserRepository
 from app.services.user_service import UserService
 
 
@@ -55,3 +56,10 @@ def mock_user_service() -> UserService:
     app.dependency_overrides[get_user_service] = override_get_user_service
 
     return service
+
+
+@pytest.fixture
+def mock_user_repository() -> UserRepository:
+    """Provide an isolated user repository mock."""
+
+    return cast(UserRepository, AsyncMock(spec=UserRepository))
